@@ -1,5 +1,5 @@
 #include "cmdwidget.hpp"
-#include "debuggerstate.h"
+#include "debuggermanager.h"
 #include "LtDbg/LtDbg/Exceptions.hpp"
 
 #include <QKeyEvent>
@@ -31,6 +31,11 @@ void CmdWidget::AddError(const QString message)
     _cmdTextEdit->append("[Error] " + message);
 }
 
+void CmdWidget::AddText(const QString message)
+{
+    _cmdTextEdit->append(message);
+}
+
 void CmdWidget::SetDebugger(Dbg * const debugger)
 {
     _dbg = debugger;
@@ -43,42 +48,41 @@ void CmdWidget::SetEnabled(const bool enabled)
 
 void CmdWidget::ExecuteCommand()
 {
-    try {
     QString cmdStr = _cmdLineEdit->text();
-    DbgResponsePtr res;
 
-    if (cmdStr.size() == 0 && _commandsHistory.size() == 0)
-        return;
+    SetEnabled(false);
 
-    if (cmdStr.size() == 0)
-    {
-        res = _dbg->ExecuteCommand(_commandsHistory[_commandIndex - 1].toStdString(), DebuggerState::Instance()->lastResponse->context);
+    try {
+        if (cmdStr.size() == 0 && _commandsHistory.size() == 0)
+            return;
+
+        if (cmdStr.size() == 0)
+        {
+            DebuggerManager::Instance()->ExecuteCommand(_commandsHistory[_commandIndex - 1].toStdString(), DebuggerManager::Instance()->lastResponse->context);
+        }
+        else
+        {
+            DebuggerManager::Instance()->ExecuteCommand(cmdStr.toStdString());
+        }
+    } catch (const DbgException & exc) {
+        AddError("An error occured");
+        AddError(QString(exc.ToString().c_str()));
     }
-    else
-    {
-        res = _dbg->ExecuteCommand(cmdStr.toStdString());
-    }
 
-    _cmdTextEdit->append(QString (res->content.c_str()));
-
-    DebuggerState::Instance()->lastResponse = res;
-
-    if (_commandsHistory.size() == 0)
+    if (_commandsHistory.size() == 0 && cmdStr.size() > 0)
     {
         _commandsHistory.push_back(cmdStr);
         _commandIndex = _commandsHistory.size();
     }
-    else if ( _commandsHistory.back() != cmdStr)
+    else if (_commandsHistory.back() != cmdStr && cmdStr.size() > 0)
     {
         _commandsHistory.push_back(cmdStr);
         _commandIndex = _commandsHistory.size();
     }
 
     _cmdLineEdit->setText("");
-    } catch (const DbgException & exc) {
-        AddError("An error occured");
-        AddError(QString(exc.ToString().c_str()));
-    }
+    SetEnabled(true);
+    _cmdLineEdit->setFocus();
 }
 
 void CmdWidget::keyPressEvent(QKeyEvent * event)

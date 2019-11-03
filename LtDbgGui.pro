@@ -10,9 +10,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = LtDbgGui
 TEMPLATE = app
-# LIBS += "C:\Users\Guillaume\Documents\Visual Studio 2017\Projects\LtDbg\udis\BuildVS2010\Build\Bin\x64\libudis86.lib"
 INCLUDEPATH += $$PWD\LtDbg\LtDbg
 INCLUDEPATH += $$PWD\LtDbg\elfio
+RESOURCES = icons\iconCmdWidget.png icons\iconStack.png icons\iconDisassembly.png
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -42,7 +42,7 @@ SOURCES += \
     mainwindow.cpp \
     parameters.cpp \
     stacktracewidget.cpp \
-    debuggerstate.cpp
+    debuggermanager.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -84,7 +84,7 @@ HEADERS += \
     mainwindow.h \
     parameters.h \
     stacktracewidget.h \
-    debuggerstate.h
+    debuggermanager.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

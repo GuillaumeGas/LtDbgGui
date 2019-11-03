@@ -16,6 +16,7 @@ public:
 
     void AddInfo(const QString message);
     void AddError(const QString message);
+    void AddText(const QString message);
 
     void SetDebugger(Dbg * const debugger);
     void SetEnabled(const bool enabled);
