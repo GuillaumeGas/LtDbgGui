@@ -30,7 +30,6 @@ public slots:
 private:
     void _initView();
     void _initMenu();
-    void _initDebugger();
     void _initDebuggerManager();
 
     QWidget * _window;

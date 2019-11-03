@@ -36,11 +36,6 @@ void CmdWidget::AddText(const QString message)
     _cmdTextEdit->append(message);
 }
 
-void CmdWidget::SetDebugger(Dbg * const debugger)
-{
-    _dbg = debugger;
-}
-
 void CmdWidget::SetEnabled(const bool enabled)
 {
     _cmdLineEdit->setEnabled(enabled);

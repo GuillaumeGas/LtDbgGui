@@ -18,7 +18,6 @@ public:
     void AddError(const QString message);
     void AddText(const QString message);
 
-    void SetDebugger(Dbg * const debugger);
     void SetEnabled(const bool enabled);
 
 private slots:
@@ -36,8 +35,6 @@ private:
 
     QVector<QString> _commandsHistory;
     int _commandIndex;
-
-    Dbg * _dbg;
 };
 
 #endif // CMDWIDGET_HPP

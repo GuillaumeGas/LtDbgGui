@@ -13,12 +13,15 @@ public:
     static DebuggerManager * Instance();
 
     void Initialize(Dbg * const dbg, CmdWidget * const cmdWidget, StackTraceWidget * const stackTraceWidget, AsmWidget * const asmWidget);
+    void ConnectToDebugger(const std::string pipename);
     void ExecuteCommand(const std::string input, KeDebugContext * context = nullptr);
 
     DbgResponsePtr lastResponse;
 
 private:
     DebuggerManager();
+    void RetrieveDisassembly();
+    void RetrieveStacktrace();
 
     static DebuggerManager * _instance;
 

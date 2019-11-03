@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     _initView();
     _initMenu();
-    _initDebugger();
     _initDebuggerManager();
 }
 
@@ -82,17 +81,14 @@ void MainWindow::_initMenu()
     connect(_actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
-void MainWindow::_initDebugger()
+void MainWindow::_initDebuggerManager()
 {
     _dbg = new Dbg;
 
+    DebuggerManager::Instance()->Initialize(_dbg, _cmdWidget, _stackTraceTextEdit, _asmTextEdit);
+
     if (_pipeLineEdit->text().length() > 0)
         connectToLtKernel();
-}
-
-void MainWindow::_initDebuggerManager()
-{
-    DebuggerManager::Instance()->Initialize(_dbg, _cmdWidget, _stackTraceTextEdit, _asmTextEdit);
 }
 
 void MainWindow::openSymbolsMenu()
@@ -105,7 +101,6 @@ void MainWindow::connectToLtKernel()
     const QString pipeName = _pipeLineEdit->text();
 
     _connexionButton->setDisabled(true);
-    _cmdWidget->SetDebugger(nullptr);
     _cmdWidget->SetEnabled(false);
 
     if (pipeName.length() > 0)
@@ -115,19 +110,7 @@ void MainWindow::connectToLtKernel()
             _dbg->Connect(_pipeLineEdit->text().toStdString());
             _dbg->SetSymbolsPath(Parameters::Instance()->symbolsPath);
 
-            DbgResponsePtr res = _dbg->ExecuteCommand(CMD_CONNECT);
-            if (res->status != DBG_STATUS_SUCCESS)
-            {
-                _cmdWidget->AddError("Connection failed with LtMicros ! (Connect command returned " + QString(res->status));
-            }
-            else
-            {
-                DebuggerManager::Instance()->lastResponse = res;
-
-                _cmdWidget->SetDebugger(_dbg);
-                _cmdWidget->SetEnabled(true);
-                _cmdWidget->AddInfo("Connected to LtMicros");
-            }
+            DebuggerManager::Instance()->ConnectToDebugger(Parameters::Instance()->pipeName);
         }
         catch (const DbgException & exc)
         {
