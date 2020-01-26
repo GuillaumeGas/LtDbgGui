@@ -74,25 +74,30 @@ void MainWindow::_initMenu()
     _actionSymbols = new QAction("Load symbols...", this);
     _actionQuit = new QAction("Quit", this);
 
+    _symbolsWindow = new SymbolsWindow;
+
     fileMenu->addAction(_actionSymbols);
     fileMenu->addAction(_actionQuit);
 
-    connect(_actionQuit, SIGNAL(triggered()), this, SLOT(openSymbolsMenu()));
+    connect(_actionSymbols, SIGNAL(triggered()), _symbolsWindow, SLOT(exec()));
     connect(_actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
 void MainWindow::_initDebuggerManager()
 {
     _dbg = new Dbg;
-
+    Parameters::Instance();
     DebuggerManager::Instance()->Initialize(_dbg, _cmdWidget, _stackTraceTextEdit, _asmTextEdit);
 
-    if (_pipeLineEdit->text().length() > 0)
-        connectToLtKernel();
+    //if (_pipeLineEdit->text().length() > 0)
+      //  connectToLtKernel();
 }
 
 void MainWindow::openSymbolsMenu()
 {
+    /*
+     * TODO : ouvrir une fenetre ici avec un textarea, chaque ligne, séparée par un ';' est un chemin vers
+     * */
     //Parameters::Instance()->symbolsPath = "";
 }
 
@@ -108,7 +113,6 @@ void MainWindow::connectToLtKernel()
         try {
             _cmdWidget->AddInfo("Trying to connect to LtMicros using pipe '" + pipeName + "'...");
             _dbg->Connect(_pipeLineEdit->text().toStdString());
-            _dbg->SetSymbolsPath(Parameters::Instance()->symbolsPath);
 
             DebuggerManager::Instance()->ConnectToDebugger(Parameters::Instance()->pipeName);
         }

@@ -42,7 +42,10 @@ SOURCES += \
     mainwindow.cpp \
     parameters.cpp \
     stacktracewidget.cpp \
-    debuggermanager.cpp
+    debuggermanager.cpp \
+    LtDbg/LtDbg/Utils/IdtUtils.cpp \
+    LtDbg/LtDbg/Utils/ManglingHelper.cpp \
+    symbolswindow.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -84,7 +87,10 @@ HEADERS += \
     mainwindow.h \
     parameters.h \
     stacktracewidget.h \
-    debuggermanager.h
+    debuggermanager.h \
+    LtDbg/LtDbg/Utils/IdtUtils.hpp \
+    LtDbg/LtDbg/Utils/ManglingHelper.hpp \
+    symbolswindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

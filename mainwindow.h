@@ -13,6 +13,7 @@
 #include "cmdwidget.hpp"
 #include "asmwidget.h"
 #include "stacktracewidget.h"
+#include "symbolswindow.h"
 #include "LtDbg/LtDbg/Dbg.hpp"
 
 class MainWindow : public QMainWindow
@@ -53,6 +54,8 @@ private:
     QAction * _actionQuit;
 
     Dbg * _dbg;
+
+    SymbolsWindow * _symbolsWindow;
 };
 
 #endif // MAINWINDOW_H
