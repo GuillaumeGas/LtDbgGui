@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "parameters.h"
+#include "debuggermanager.h"
 
 SymbolsWindow::SymbolsWindow() : QDialog(nullptr)
 {
@@ -56,6 +57,8 @@ void SymbolsWindow::MySaveAndClose()
     }
 
     Parameters::Instance()->Save();
+
+    DebuggerManager::Instance()->LoadSymbols(Parameters::Instance()->symbolsPaths);
 
     accept();
 }

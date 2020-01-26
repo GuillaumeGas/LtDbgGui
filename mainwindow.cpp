@@ -86,19 +86,10 @@ void MainWindow::_initMenu()
 void MainWindow::_initDebuggerManager()
 {
     _dbg = new Dbg;
-    Parameters::Instance();
     DebuggerManager::Instance()->Initialize(_dbg, _cmdWidget, _stackTraceTextEdit, _asmTextEdit);
-
+    DebuggerManager::Instance()->LoadSymbols(Parameters::Instance()->symbolsPaths);
     //if (_pipeLineEdit->text().length() > 0)
       //  connectToLtKernel();
-}
-
-void MainWindow::openSymbolsMenu()
-{
-    /*
-     * TODO : ouvrir une fenetre ici avec un textarea, chaque ligne, séparée par un ';' est un chemin vers
-     * */
-    //Parameters::Instance()->symbolsPath = "";
 }
 
 void MainWindow::connectToLtKernel()

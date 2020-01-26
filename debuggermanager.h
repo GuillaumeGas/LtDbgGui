@@ -15,6 +15,7 @@ public:
     void Initialize(Dbg * const dbg, CmdWidget * const cmdWidget, StackTraceWidget * const stackTraceWidget, AsmWidget * const asmWidget);
     void ConnectToDebugger(const std::string pipename);
     void ExecuteCommand(const std::string input, KeDebugContext * context = nullptr);
+    void LoadSymbols(std::vector<std::string> & symbolsPaths);
 
     DbgResponsePtr lastResponse;
 

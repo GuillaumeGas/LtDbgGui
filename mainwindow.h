@@ -25,7 +25,6 @@ public:
     ~MainWindow();
 
 public slots:
-    void openSymbolsMenu();
     void connectToLtKernel();
 
 private:

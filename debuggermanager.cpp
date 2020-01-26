@@ -106,3 +106,8 @@ void DebuggerManager::RetrieveStacktrace()
 
     _stackTraceWidget->setText(QString(res->content.c_str()));
 }
+
+void DebuggerManager::LoadSymbols(std::vector<std::string> & symbolsPaths)
+{
+    _dbg->SetSymbolsPaths(symbolsPaths);
+}
